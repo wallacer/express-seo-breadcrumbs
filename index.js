@@ -30,14 +30,23 @@ const isDebug = function(){
  * @function addBreadcrumbs getter/setter for breadcrumbs
  * @param {Object}
  */
-const addBreadcrumbs = (crumb) => {
+const addBreadcrumbs = (crumb, options) => {
   if (!crumb) return breadcrumbs;
+
+  options = options || {};
 
   const idx = exists(crumb);
   const idxOuter = isInner(crumb);
 
   if(isDebug()){
-    console.log("adding breadcrumb", crumb, idx, idxOuter, breadcrumbs.length);
+    console.log("[breadcrumbs] adding breadcrumb", crumb, idx, idxOuter, breadcrumbs.length);
+  }
+
+  if(options.maxDepth != null && options.maxDepth < breadcrumbs.length){
+    if(isDebug()){
+      console.log('[breadcrumbs] spliced to max depth', options.maxDepth);
+    }
+    breadcrumbs.splice(options.maxDepth, breadcrumbs.length);
   }
 
   if(breadcrumbs.length === 1 && idx === -1) {
@@ -48,7 +57,7 @@ const addBreadcrumbs = (crumb) => {
   if(idx > -1 && breadcrumbs.length > idx+1){
     breadcrumbs.splice(idx+1, breadcrumbs.length);
     if(isDebug()){
-      console.log("spliced to existing breadcrumbs", idx, breadcrumbs.length);
+      console.log("[breadcrumbs] spliced to existing breadcrumb", idx, breadcrumbs.length);
     }
     return;
   }
