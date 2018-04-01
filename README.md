@@ -26,7 +26,7 @@ app.use(breadcrumbs.init());
 
 set home location:
 ```javascript
-app.use(breadcrumbs.setHome({ name: 'Home', url: '/' })); //sample values are defaults
+breadcrumbs.setHome({ name: 'Home', url: '/' }); //sample values are defaults
 ```
 
 whenever you need to set a breadcrumb use within the route:
