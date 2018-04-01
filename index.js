@@ -37,7 +37,7 @@ const addBreadcrumbs = (crumb) => {
   const idxOuter = isInner(crumb);
 
   if(isDebug()){
-    console.log("adding breadcrumb", crumb, idx, idxOuter);
+    console.log("adding breadcrumb", crumb, idx, idxOuter, breadcrumbs.length);
   }
 
   if(breadcrumbs.length === 1 && idx === -1) {
@@ -45,7 +45,15 @@ const addBreadcrumbs = (crumb) => {
     return;
   }
 
-  if(idx === -1 && idxOuter !== -1){
+  if(idx > -1 && breadcrumbs.length > idx+1){
+    breadcrumbs.splice(idx+1, breadcrumbs.length);
+    if(isDebug()){
+      console.log("spliced to existing breadcrumbs", idx, breadcrumbs.length);
+    }
+    return;
+  }
+
+  if(idxOuter !== -1){
     if(idxOuter !== breadcrumbs.length - 1){
       breadcrumbs.splice(idxOuter + 1, breadcrumbs.length);
     }
@@ -53,11 +61,11 @@ const addBreadcrumbs = (crumb) => {
     return;
   }
 
-  if(idx === -1 && idxOuter === -1){
-    breadcrumbs.splice(1, breadcrumbs.length);
-    breadcrumbs.push(crumb);
-    return;
-  }
+  
+  //breadcrumbs.splice(1, breadcrumbs.length);
+  breadcrumbs.push(crumb);
+
+  
 };
 
 /**
