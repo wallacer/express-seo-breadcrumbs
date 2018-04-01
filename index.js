@@ -4,6 +4,8 @@
  */
 const breadcrumbs = [];
 
+let _config;
+
 /**
  * @function exists
  * @param {Object}
@@ -18,6 +20,7 @@ const exists = obj => breadcrumbs.findIndex(crumb => crumb.name === obj.name && 
  */
 const isInner = obj => breadcrumbs.findIndex(crumb => obj.url.includes(`${crumb.url}/`));
 
+
 /**
  * @function addBreadcrumbs getter/setter for breadcrumbs
  * @param {Object}
@@ -28,12 +31,12 @@ const addBreadcrumbs = (crumb) => {
   const idx = exists(crumb);
   const idxOuter = isInner(crumb);
 
-  if(breadcrumbs.length === 1) {
+  if(breadcrumbs.length === 1 && idx === -1) {
     breadcrumbs.push(crumb);
     return;
   }
 
-  if(!~idx && ~idxOuter){
+  if(idx === -1 && idxOuter !== -1){
     if(idxOuter !== breadcrumbs.length - 1){
       breadcrumbs.splice(idxOuter + 1, breadcrumbs.length);
     }
@@ -41,7 +44,7 @@ const addBreadcrumbs = (crumb) => {
     return;
   }
 
-  if(!~idx && !~idxOuter){
+  if(idx === -1 && idxOuter === -1){
     breadcrumbs.splice(1, breadcrumbs.length);
     breadcrumbs.push(crumb);
     return;
@@ -65,7 +68,12 @@ const init = function () {
   };
 };
 
+const configure = function (config) {
+  _config = config;
+};
+
 module.exports = {
   setHome,
-  init
+  init,
+  configure
 };
