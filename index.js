@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * @const breadcrumbs
  * @type {Array} of objects of type {name, url}
@@ -20,6 +22,9 @@ const exists = obj => breadcrumbs.findIndex(crumb => crumb.name === obj.name && 
  */
 const isInner = obj => breadcrumbs.findIndex(crumb => obj.url.includes(`${crumb.url}/`));
 
+const isDebug = function(){
+  return _config && _config.debug;
+};
 
 /**
  * @function addBreadcrumbs getter/setter for breadcrumbs
@@ -30,6 +35,10 @@ const addBreadcrumbs = (crumb) => {
 
   const idx = exists(crumb);
   const idxOuter = isInner(crumb);
+
+  if(isDebug()){
+    console.log("adding breadcrumb", crumb, idx, idxOuter);
+  }
 
   if(breadcrumbs.length === 1 && idx === -1) {
     breadcrumbs.push(crumb);
